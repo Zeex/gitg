@@ -552,6 +552,23 @@ namespace GitgHistory
 			});
 		}
 
+		public bool on_key_pressed (Gdk.EventKey event) {
+			var mmask = Gtk.accelerator_get_default_mod_mask();
+
+			if ((mmask & event.state) == Gdk.ModifierType.MOD1_MASK)
+			{
+				foreach(var element in d_panels.get_available_elements()) {
+					 GitgExt.HistoryPanel panel = (GitgExt.HistoryPanel)element;
+					uint? key = panel.shortcut;
+					if (key != null && key == Gdk.keyval_to_lower(event.keyval)) {
+						panel.activate();
+						return true;
+					}
+				};
+			}
+			return false;
+		}
+
 		private void build_ui()
 		{
 			d_main = new Paned();
